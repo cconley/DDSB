@@ -1,4 +1,6 @@
-#' conditional model
+#' For use with EQAO ISD files
+#'
+#' Collapsing IEP categories into a single column
 #'
 #' Use:   df <- EQAO_IEPrecode(df)
 #'
@@ -81,7 +83,124 @@ EQAO_IEPrecode <- function(x){
                 )
          )
   )
+  return(x)
+}
 
 
+
+#' For use with all raw secondary EQAO ISD files
+#'
+#' Use:   df <- EQAO_SecCourse(df)
+#'
+#' Cleaning all Secondary Course type labels
+#'
+#' Function determines whether the ISD is elementary or secondary assessments and recodes
+
+EQAO_SecCourse <- function(x){
+  ifelse("LevelOfStudyLanguage" %in% colnames(x),
+         {x$re.course <- ifelse(x$LevelOfStudyLanguage == "-2", "Ambiguous",
+                                ifelse(x$LevelOfStudyLanguage == "-1", "Missing",
+                                       ifelse(x$LevelOfStudyLanguage == "0", "NA",
+                                              ifelse(x$LevelOfStudyLanguage == "1", "Academic",
+                                                     ifelse(x$LevelOfStudyLanguage == "2", "Applied",
+                                                            ifelse(x$LevelOfStudyLanguage == "3", "Locally Developed",
+                                                                   ifelse(x$LevelOfStudyLanguage == "4", "ESL/ELD",
+                                                                          ifelse(x$LevelOfStudyLanguage == "5", "Other","BadCode")
+                                                                   )
+                                                            )
+                                                     )
+                                              )
+                                       )
+                                )
+         )},
+         ifelse("Program" %in% colnames(x),
+                {x$re.course <- ifelse(x$Program =="1", "Applied",
+                                       ifelse(x$Program == "2", "Academic", "BadCode")
+                )}, x$re.course <- "Elementary - Not Applicable"
+         )
+  )
+  return(x)
+}
+
+
+#' For use with all raw EQAO ISD file
+#'
+#' Cleaning ELL field names
+#'
+#' Use:   df <- EQAO_ELL(df)
+#'
+#' Function determines whether the ISD is elementary or secondary assessments and recodes
+
+EQAO_ELL <- function(x){
+  ifelse("Background_ESLELD_ALFPDF" %in% colnames(x),
+         {x$ELLcode <- ifelse(x$Background_ESLELD_ALFPDF == "-1", "Missing",
+                             ifelse(x$Background_ESLELD_ALFPDF == "0", "Not ELL",
+                                    ifelse(x$Background_ESLELD_ALFPDF == "1", "ELL",
+                                           ifelse(x$Background_ESLELD_ALFPDF == "2", NULL,
+                                                  ifelse(x$Background_ESLELD_ALFPDF == "3", NULL,"BadCode"
+                                                  )
+                                           )
+                                    )
+                             )
+         )},
+         ifelse("ESLELD_ALFPDF" %in% colnames(x),
+                {x$EQAOcode <- ifelse(x$ESLELD_ALFPDF == "-1", "Missing",
+                                    ifelse(x$ESLELD_ALFPDF == "0", "Not ELL",
+                                           ifelse(x$ESLELD_ALFPDF == "1", "ELL",
+                                                  ifelse(x$ESLELD_ALFPDF == "2", NULL,
+                                                         ifelse(x$ESLELD_ALFPDF == "3", NULL,"BadCode"
+                                                         )
+                                                  )
+                                           )
+                                    )
+                )},  x$EQAOcode <- "Unknown File Format"
+         )
+  )
+  return(x)
+}
+
+
+#' For use with all raw Elementary EQAO ISD file
+#'
+#' Cleaning FI labels
+#'
+#' Use:   df <- EQAO_FI(df)
+#'
+#' French Immersion is an elementary distinction.  Secondary is addressed through course types
+#'
+#' Function determines whether the ISD is elementary or secondary assessments and recodes
+
+EQAO_FI <- function(x){
+  ifelse("Background_FrenchImmersion" %in% colnames(x),
+         {x$FIcode <- ifelse(x$Background_FrenchImmersion == "-1", "Missing",
+                            ifelse(x$Background_FrenchImmersion == "0", "Not FI",
+                                   ifelse(x$Background_FrenchImmersion == "1", "FI (A)",
+                                          ifelse(x$Background_FrenchImmersion == "2", "FI (B)",
+                                                 ifelse(x$Background_FrenchImmersion == "3", "FI (C)",
+                                                        ifelse(x$Background_FrenchImmersion == "4", "FI (G6)", "BadCode"
+                                                        )
+                                                 )
+                                          )
+                                   )
+                            )
+         )},  x$FIcode <- "Secondary - Not Applicable"
+  )
+  return(x)
+}
+
+
+
+#For use with all raw EQAO ISD file
+#
+#Use:   df <- EQAO_Gender(df)
+#
+#Gender is a standard field used in all ISDs and it not assessment specific
+
+EQAO_Gender <- function(x){
+  x$Gendercod <- ifelse(x$Gender == "-1", "Missing",
+                        ifelse(x$Gender == "1", "Male",
+                               ifelse(x$Gender == "2", "Female", "BadCode")
+                        )
+  )
   return(x)
 }
