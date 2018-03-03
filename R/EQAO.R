@@ -1,134 +1,83 @@
-#conditional model
-#
-#Use:   df <- IEPFull.EQAO(df)
-#
-#Function determines whether the ISD data frame is grade 3, 6, 9 or 10 and creates a new IEP column of IEP labels
-# * Note: OSSLT returns IEPcode column
+#' conditional model
+#'
+#' Use:   df <- EQAO_IEPrecode(df)
+#'
+#' Function determines whether the ISD data frame is grade 3, 6, 9 or 10 and creates a new IEPcode column of IEP labels
+
 
 EQAO_IEPrecode <- function(x){
   ifelse("ROverallLevel" %in% colnames(x),
-         {x$IEP <- paste0(x$SIF_IEP,
-                          x$SIF_IPRC_Behaviour,
-                          x$SIF_IPRC_Autism,
-                          x$SIF_IPRC_Deaf,
-                          x$SIF_IPRC_Language,
-                          x$SIF_IPRC_Speech,
-                          x$SIF_IPRC_Learning,
-                          x$SIF_IPRC_Giftedness,
-                          x$SIF_IPRC_MildIntellectual,
-                          x$SIF_IPRC_Developmental,
-                          x$SIF_IPRC_Physical,
-                          x$SIF_IPRC_Blind,
-                          x$SIF_IPRC_Multiple)
-         x$IEP <- ifelse(x$IEP == "0000000000000", "No IEP",
-                         ifelse(x$IEP == "1000000000000", "IEP no IPRC",
-                                ifelse(x$IEP == "1100000000000", "Behaviour",
-                                       ifelse(x$IEP == "1010000000000", "Autism",
-                                              ifelse(x$IEP == "1001000000000", "Deaf",
-                                                     ifelse(x$IEP == "1000100000000", "Language",
-                                                            ifelse(x$IEP == "1000010000000", "Speech",
-                                                                   ifelse(x$IEP == "1000001000000","Learning",
-                                                                          ifelse(x$IEP == "1000000100000","Giftedness",
-                                                                                 ifelse(x$IEP == "1000000010000","MildIntellectual",
-                                                                                        ifelse(x$IEP == "1000000001000","Developmental",
-                                                                                               ifelse(x$IEP == "1000000000100","Physical",
-                                                                                                      ifelse(x$IEP == "1000000000010","Blind",
-                                                                                                             ifelse(x$IEP == "1000000000001","Multiple","BadCode")
-                                                                                                      )
-                                                                                               )
-                                                                                        )
-                                                                                 )
-                                                                          )
-                                                                   )
-                                                            )
-                                                     )
-                                              )
-                                       )
-                                )
-                         )
+         {x$IEPcode <- ifelse(x$SIF_IPRC_Behaviour == "1", "Behaviour",
+                                   ifelse(x$SIF_IPRC_Autism == "1", "Autism",
+                                          ifelse(x$SIF_IPRC_Deaf == "1", "Deaf",
+                                                 ifelse(x$SIF_IPRC_Language == "1", "Language",
+                                                        ifelse(x$SIF_IPRC_Speech == "1", "Speech",
+                                                               ifelse(x$SIF_IPRC_Learning == "1", "Learning",
+                                                                      ifelse(x$SIF_IPRC_Giftedness == "1", "Giftedness",
+                                                                             ifelse(x$SIF_IPRC_MildIntellectual == "1", "MildIntellectual",
+                                                                                    ifelse(x$SIF_IPRC_Developmental == "1", "Development",
+                                                                                           ifelse(x$SIF_IPRC_Physical == "1", "Physical",
+                                                                                                  ifelse(x$SIF_IPRC_Blind =="1", "Blind",
+                                                                                                         ifelse(x$SIF_IPRC_Multiple == "1", "Multiple",NA)
+                                                                                                  )
+                                                                                           )
+                                                                                    )
+                                                                             )
+                                                                      )
+                                                               )
+                                                        )
+                                                 )
+                                          )
+                                   )
          )},
          ifelse("MathClassWhen" %in% colnames(x),
-                {x$IEP <- paste0(x$SIF_IEP,
-                                 x$SIF_IPRCBehaviour,
-                                 x$SIF_IPRCAutism,
-                                 x$SIF_IPRCDeaf,
-                                 x$SIF_IPRCLanguage,
-                                 x$SIF_IPRCSpeech,
-                                 x$SIF_IPRCLearning,
-                                 x$SIF_IPRCGifted,
-                                 x$SIF_IPRCIntellectual,
-                                 x$SIF_IPRCDevelopmental,
-                                 x$SIF_IPRCPhysical,
-                                 x$SIF_IPRCBlind,
-                                 x$SIF_IPRCMultiple)
-                x$IEP <- ifelse(x$IEP == "0000000000000", "No IEP",
-                                ifelse(x$IEP == "1000000000000", "IEP no IPRC",
-                                       ifelse(x$IEP == "1100000000000", "Behaviour",
-                                              ifelse(x$IEP == "1010000000000", "Autism",
-                                                     ifelse(x$IEP == "1001000000000", "Deaf",
-                                                            ifelse(x$IEP == "1000100000000", "Language",
-                                                                   ifelse(x$IEP == "1000010000000", "Speech",
-                                                                          ifelse(x$IEP == "1000001000000","Learning",
-                                                                                 ifelse(x$IEP == "1000000100000","Giftedness",
-                                                                                        ifelse(x$IEP == "1000000010000","MildIntellectual",
-                                                                                               ifelse(x$IEP == "1000000001000","Developmental",
-                                                                                                      ifelse(x$IEP == "1000000000100","Physical",
-                                                                                                             ifelse(x$IEP == "1000000000010","Blind",
-                                                                                                                    ifelse(x$IEP == "1000000000001","Multiple","BadCode")
-                                                                                                             )
-                                                                                                      )
-                                                                                               )
-                                                                                        )
-                                                                                 )
-                                                                          )
-                                                                   )
-                                                            )
-                                                     )
-                                              )
-                                       )
-                                )
+                {x$IEPcode <- ifelse(x$SIF_IPRCBehaviour == "1", "Behaviour",
+                                 ifelse(x$SIFIPRC_Autism == "1", "Autism",
+                                        ifelse(x$SIF_IPRCDeaf == "1", "Deaf",
+                                               ifelse(x$SIF_IPRCLanguage == "1", "Language",
+                                                      ifelse(x$SIF_IPRCSpeech == "1", "Speech",
+                                                             ifelse(x$SIF_IPRCLearning == "1", "Learning",
+                                                                    ifelse(x$SIF_IPRCGiftedness == "1", "Giftedness",
+                                                                           ifelse(x$SIF_IPRCMildIntellectual == "1", "MildIntellectual",
+                                                                                  ifelse(x$SIF_IPRCDevelopmental == "1", "Development",
+                                                                                         ifelse(x$SIF_IPRCPhysical == "1", "Physical",
+                                                                                                ifelse(x$SIF_IPRCBlind =="1", "Blind",
+                                                                                                       ifelse(x$SIF_IPRCMultiple == "1", "Multiple",NA)
+                                                                                                )
+                                                                                         )
+                                                                                  )
+                                                                           )
+                                                                    )
+                                                             )
+                                                      )
+                                               )
+                                        )
+                                 )
                 )},
                 ifelse("OSSLTOutcome" %in% colnames(x),
-                       {x$IEPcode <- paste0(x$IEP,
-                                            x$IPRCExBehaviour,
-                                            x$IPRCExAutism,
-                                            x$IPRCExDeaf,
-                                            x$IPRCExLanguage,
-                                            x$IPRCExSpeech,
-                                            x$IPRCExLearning,
-                                            x$IPRCExGiftedness,
-                                            x$IPRCExMildIntellectual,
-                                            x$IPRCExDevelopmental,
-                                            x$IPRCExPhysical,
-                                            x$IPRCExBlind,
-                                            x$IPRCExMultiple)
-                       x$IEPcode <- ifelse(x$IEPcode == "0000000000000", "No IEP",
-                                           ifelse(x$IEPcode == "1000000000000", "IEP no IPRC",
-                                                  ifelse(x$IEPcode == "1100000000000", "Behaviour",
-                                                         ifelse(x$IEPcode == "1010000000000", "Autism",
-                                                                ifelse(x$IEPcode == "1001000000000", "Deaf",
-                                                                       ifelse(x$IEPcode == "1000100000000", "Language",
-                                                                              ifelse(x$IEPcode == "1000010000000", "Speech",
-                                                                                     ifelse(x$IEPcode == "1000001000000","Learning",
-                                                                                            ifelse(x$IEPcode == "1000000100000","Giftedness",
-                                                                                                   ifelse(x$IEPcode == "1000000010000","MildIntellectual",
-                                                                                                          ifelse(x$IEPcode == "1000000001000","Developmental",
-                                                                                                                 ifelse(x$IEPcode == "1000000000100","Physical",
-                                                                                                                        ifelse(x$IEPcode == "1000000000010","Blind",
-                                                                                                                               ifelse(x$IEPcode == "1000000000001","Multiple","BadCode")
-                                                                                                                        )
-                                                                                                                 )
-                                                                                                          )
-                                                                                                   )
-                                                                                            )
-                                                                                     )
-                                                                              )
-                                                                       )
-                                                                )
-                                                         )
-                                                  )
-                                           )
-                       )},  x$IEPcode <- "Unknown File Format"
+                       {x$IEPcode <- ifelse(x$IPRCExBehaviour == "1", "Behaviour",
+                                        ifelse(x$IPRCEx_Autism == "1", "Autism",
+                                               ifelse(x$IPRCExDeaf == "1", "Deaf",
+                                                      ifelse(x$IPRCExLanguage == "1", "Language",
+                                                             ifelse(x$IPRCExSpeech == "1", "Speech",
+                                                                    ifelse(x$IPRCExLearning == "1", "Learning",
+                                                                           ifelse(x$IPRCExGiftedness == "1", "Giftedness",
+                                                                                  ifelse(x$IPRCExMildIntellectual == "1", "MildIntellectual",
+                                                                                         ifelse(x$IPRCExDevelopmental == "1", "Development",
+                                                                                                ifelse(x$IPRCExPhysical == "1", "Physical",
+                                                                                                       ifelse(x$IPRCExBlind =="1", "Blind",
+                                                                                                              ifelse(x$IPRCExMultiple == "1", "Multiple",NA)
+                                                                                                       )
+                                                                                                )
+                                                                                         )
+                                                                                  )
+                                                                           )
+                                                                    )
+                                                             )
+                                                      )
+                                               )
+                                        )
+                )},  x$IEPcode <- "Unknown File Format"
                 )
          )
   )
