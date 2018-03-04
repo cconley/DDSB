@@ -20,7 +20,7 @@ ISD_IEPrecode <- function(x){
                                                                                     ifelse(x$SIF_IPRC_Developmental == "1", "Development",
                                                                                            ifelse(x$SIF_IPRC_Physical == "1", "Physical",
                                                                                                   ifelse(x$SIF_IPRC_Blind =="1", "Blind",
-                                                                                                         ifelse(x$SIF_IPRC_Multiple == "1", "Multiple",NA)
+                                                                                                         ifelse(x$SIF_IPRC_Multiple == "1", "Multiple","No IEP")
                                                                                                   )
                                                                                            )
                                                                                     )
@@ -44,7 +44,7 @@ ISD_IEPrecode <- function(x){
                                                                                   ifelse(x$SIF_IPRCDevelopmental == "1", "Development",
                                                                                          ifelse(x$SIF_IPRCPhysical == "1", "Physical",
                                                                                                 ifelse(x$SIF_IPRCBlind =="1", "Blind",
-                                                                                                       ifelse(x$SIF_IPRCMultiple == "1", "Multiple",NA)
+                                                                                                       ifelse(x$SIF_IPRCMultiple == "1", "Multiple","No IEP")
                                                                                                 )
                                                                                          )
                                                                                   )
@@ -68,7 +68,7 @@ ISD_IEPrecode <- function(x){
                                                                                          ifelse(x$IPRCExDevelopmental == "1", "Development",
                                                                                                 ifelse(x$IPRCExPhysical == "1", "Physical",
                                                                                                        ifelse(x$IPRCExBlind =="1", "Blind",
-                                                                                                              ifelse(x$IPRCExMultiple == "1", "Multiple",NA)
+                                                                                                              ifelse(x$IPRCExMultiple == "1", "Multiple","No IEP")
                                                                                                        )
                                                                                                 )
                                                                                          )
