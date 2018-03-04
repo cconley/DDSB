@@ -7,7 +7,7 @@
 #' Function determines whether the ISD data frame is grade 3, 6, 9 or 10 and creates a new IEPcode column of IEP labels
 
 
-EQAO_IEPrecode <- function(x){
+ISD_IEPrecode <- function(x){
   ifelse("ROverallLevel" %in% colnames(x),
          {x$IEPcode <- ifelse(x$SIF_IPRC_Behaviour == "1", "Behaviour",
                                    ifelse(x$SIF_IPRC_Autism == "1", "Autism",
@@ -96,7 +96,7 @@ EQAO_IEPrecode <- function(x){
 #'
 #' Function determines whether the ISD is elementary or secondary assessments and recodes
 
-EQAO_SecCourse <- function(x){
+ISD_SecCourse <- function(x){
   ifelse("LevelOfStudyLanguage" %in% colnames(x),
          {x$re.course <- ifelse(x$LevelOfStudyLanguage == "-2", "Ambiguous",
                                 ifelse(x$LevelOfStudyLanguage == "-1", "Missing",
@@ -131,7 +131,7 @@ EQAO_SecCourse <- function(x){
 #'
 #' Function determines whether the ISD is elementary or secondary assessments and recodes
 
-EQAO_ELL <- function(x){
+ISD_ELL <- function(x){
   ifelse("Background_ESLELD_ALFPDF" %in% colnames(x),
          {x$ELLcode <- ifelse(x$Background_ESLELD_ALFPDF == "-1", "Missing",
                              ifelse(x$Background_ESLELD_ALFPDF == "0", "Not ELL",
@@ -170,7 +170,7 @@ EQAO_ELL <- function(x){
 #'
 #' Function determines whether the ISD is elementary or secondary assessments and recodes
 
-EQAO_FI <- function(x){
+ISD_FI <- function(x){
   ifelse("Background_FrenchImmersion" %in% colnames(x),
          {x$FIcode <- ifelse(x$Background_FrenchImmersion == "-1", "Missing",
                             ifelse(x$Background_FrenchImmersion == "0", "Not FI",
@@ -196,11 +196,68 @@ EQAO_FI <- function(x){
 #
 #Gender is a standard field used in all ISDs and it not assessment specific
 
-EQAO_Gender <- function(x){
+ISD_Gender <- function(x){
   x$Gendercod <- ifelse(x$Gender == "-1", "Missing",
                         ifelse(x$Gender == "1", "Male",
                                ifelse(x$Gender == "2", "Female", "BadCode")
                         )
   )
   return(x)
+}
+
+
+ISD_Achieve <- function(x) {
+  x$Reading <- ifelse(x$ROverallLevel == "B", "No Data",
+                      ifelse(x$ROverallLevel == "P", "Pending",
+                             ifelse(x$ROverallLevel == "Q", "Not Required",
+                                    ifelse(x$ROverallLevel %in% c("R", "W"), "Withheld",
+                                           ifelse(x$ROverallLevel == "X", "Exempt", x$ROverallLevel)))))
+
+  x$Writing <- ifelse(x$WOverallLevel == "B", "No Data",
+                      ifelse(x$WOverallLevel == "P", "Pending",
+                             ifelse(x$WOverallLevel == "Q", "Not Required",
+                                    ifelse(x$ROverallLevel %in% c("R", "W"), "Withheld",
+                                           ifelse(x$WOverallLevel == "X", "Exempt", x$ROverallLevel)))))
+
+  x$Math <- ifelse(x$MOverallLevel == "B", "No Data",
+                   ifelse(x$MOverallLevel == "P", "Pending",
+                          ifelse(x$MOverallLevel == "Q", "Not Required",
+                                 ifelse(x$MOverallLevel %in% c("R", "W"), "Withheld",
+                                        ifelse(x$MOverallLevel == "X", "Exempt", x$ROverallLevel)))))
+
+  return(x)
+
+}
+
+
+
+ISD_AchieveFctr <- function(x) {
+  x$Reading <- ifelse(x$ROverallLevel == "B", "No Data",
+                      ifelse(x$ROverallLevel == "P", "Pending",
+                             ifelse(x$ROverallLevel == "Q", "Not Required",
+                                    ifelse(x$ROverallLevel %in% c("R", "W"), "Withheld",
+                                           ifelse(x$ROverallLevel == "X", "Exempt", x$ROverallLevel)))))
+    x$Reading <- factor(x$Reading, levels = c("Not Required", "No Data",  "Exempt", "Withheld", "Pending", "1", "2", "3", "4"))
+
+  x$Writing <- ifelse(x$WOverallLevel == "B", "No Data",
+                      ifelse(x$WOverallLevel == "P", "Pending",
+                             ifelse(x$WOverallLevel == "Q", "Not Required",
+                                    ifelse(x$ROverallLevel %in% c("R", "W"), "Withheld",
+                                           ifelse(x$WOverallLevel == "X", "Exempt", x$ROverallLevel)))))
+    x$Writing <- factor(x$Writing, levels = c("Not Required", "No Data",  "Exempt", "Withheld", "Pending", "1", "2", "3", "4"))
+
+  x$Math <- ifelse(x$MOverallLevel == "B", "No Data",
+                        ifelse(x$MOverallLevel == "P", "Pending",
+                               ifelse(x$MOverallLevel == "Q", "Not Required",
+                                      ifelse(x$MOverallLevel %in% c("R", "W"), "Withheld",
+                                             ifelse(x$MOverallLevel == "X", "Exempt", x$ROverallLevel)))))
+    x$Math <- factor(x$Math, levels = c("Not Required", "No Data",  "Exempt", "Withheld", "Pending", "1", "2", "3", "4"))
+
+        return(x)
+
+  }
+
+
+ISD_RWMfactor <- function(x) {
+
 }
