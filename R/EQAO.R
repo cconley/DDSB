@@ -5,6 +5,7 @@
 #' Use:   df <- EQAO_IEPrecode(df)
 #'
 #' Function determines whether the ISD data frame is grade 3, 6, 9 or 10 and creates a new IEPcode column of IEP labels
+#' Adapted from drsimonj'b blog post: https://drsimonj.svbtle.com/creating-corporate-colour-palettes-for-ggplot2
 
 
 ISD_IEPrecode <- function(x){
@@ -257,7 +258,17 @@ ISD_AchieveFctr <- function(x) {
 
   }
 
-
-ISD_RWMfactor <- function(x) {
-
-}
+#' Examples
+#' ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species)) +
+#' geom_point(size = 4) +
+#'   DDSB_scale_color()
+#'
+#'
+#' ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Sepal.Length)) +
+#'   geom_point(size = 4, alpha = .6) +
+#'   DDSB_scale_color(discrete = FALSE, palette = "cool")
+#'
+#' ggplot(mpg, aes(manufacturer, fill = manufacturer)) +
+#'   geom_bar() +
+#'   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+#'   DDSB_scale_fill(palette = "mixed", guide = "none")
