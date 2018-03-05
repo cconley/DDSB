@@ -5,7 +5,7 @@
 #' Use:   df <- EQAO_IEPrecode(df)
 #'
 #' Function determines whether the ISD data frame is grade 3, 6, 9 or 10 and creates a new IEPcode column of IEP labels
-#' Adapted from drsimonj'b blog post: https://drsimonj.svbtle.com/creating-corporate-colour-palettes-for-ggplot2
+#'  Adapted from drsimonj'b blog post: https://drsimonj.svbtle.com/creating-corporate-colour-palettes-for-ggplot2
 
 
 ISD_IEPrecode <- function(x){
